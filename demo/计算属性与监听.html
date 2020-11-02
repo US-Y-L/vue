@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="demo">
+        姓：<input type="text" placeholder="First name" v-model="firstName"><br/>
+        名：<input type="text" placeholder="Last name" v-model="lastName"><br/>
+        姓名一(单向)：<input type="text" placeholder="Full name1" v-model="fullName1"><br/>
+        姓名二(单向)：<input type="text" placeholder="Full name2" v-model="fullName2"><br/>
+        姓名三(双向)：<input type="text" placeholder="Full name3" v-model="fullName3"><br/>
+    </div>
+
+    <script>
+        let vm = new Vue({
+            el:"#demo",
+            data:{
+                firstName:"A",
+                lastName:"B",
+
+               fullName2:"A B"
+            },
+            computed:{
+                //什么时候调？ 初始化显示/相关的data属相发生改变
+                fullName1 () {
+                    console.log('fullName1()');
+                    return this.firstName + ' ' + this.lastName;
+                },
+                fullName3 : {
+                    //计算并返回当前属性的值
+                    get() {
+                        return this.firstName + " " + this.lastName;
+                    },
+                    set(value){
+                        const arr = value.split(" ");
+                        this.firstName = arr[0];
+                        this.lastName = arr[1];
+                    }
+                }
+            },
+            watch:{
+                //配置监视
+                firstName : function(value) { //监听firstName发生改变
+                    this.fullName2 = value + " " + this.lastName;
+                }
+            }
+        });
+        //实例对象的方法
+        vm.$watch('lastName' , function(value){
+            console.log(value);
+            this.fullName2 = this.firstName + " " + value;
+        })
+    </script>
+</body>
+</html>
