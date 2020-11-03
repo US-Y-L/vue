@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../vue.js"></script>
+</head>
+
+<body>
+    <!-- <div id="app">
+                 <input type="radio" v-model="picked" :value="value">
+                 <label>单选按钮</label>
+                 <p>{{picked}}</p>
+                 <p>{{value}}</p>
+    </div>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                picked: false,
+                value: 123
+            },
+        })
+    </script> -->
+
+    <div id="app">
+        <ul v-for="(items,index) in arr">
+            <li>{{index}}---{{items.name}}---{{items.age}}--<button @click="dele">删除</button>-----<button @click="update(index)">更新</button></li>
+        </ul>
+    </div>
+    <script>
+        new Vue({
+            el:"#app",
+            data:{
+                nameN:"",
+                ageN:"",
+                newP:{},
+                arr:[
+                    {name:"gary",age:13},
+                    {name:"borry",age:23},
+                    {name:"nigo",age:15},
+                    {name:"sam",age:14},
+                    {name:"tom",age:39},
+                ]
+            },
+            methods:{
+                //vue本身只监视了数组的变化，但没有监视数组内部数据的变化
+                //但是vue重写了数组中一系列改变数组内部数据的方法(先调用原生，再更新界面) -->使数组的改变也拥有数据绑定
+                dele(index){
+                    this.arr.splice(index,1)
+                },
+                update(index){
+                    this.nameN = prompt("请输入新name");
+                    this.ageN = prompt("请输入新age");
+                    if(this.nameN && this.ageN){
+                        this.newP.name=this.nameN;
+                        this.newP.age = this.ageN;
+                        //splice方法可以用于替换数组中的内容
+                        this.arr.splice(index,1,this.newP);
+                    }else{
+                        alert("请完整输入");
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
